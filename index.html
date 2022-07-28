@@ -1,47 +1,63 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>MediaArt by p5.js</title>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEBカメラの映像を表示</title>	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+  <script src="./sample_speech/p5.js-speech/lib/p5.speech.js"></script>
+</head>
+<body>
+    <div>
+        <div>
+            <video id="video"></video>
+        </div>
+    </div>
     <script>
-      let song,analyzer;
-      function preload(){
-        song=loadSound('パステルハウス.mp3');
-      }
-      function setup(){
-        createCanvas(710,200);
-        analyzer=new p5.Amplitude();
-        const button=setButton('START',{
-          x:40,
-          y:180
-        });
-        button.mousePressed(()=>{
-          if(song.isPlaying()){
-            song.puse();
-            button.html('LOOP');
-          }else{
-            song.loop();
-            analyzer.setInput(song);
-            button.html('PAUSE');
-          }
-        });
-      }
-      function draw(){
-        background(255);
-        let rms=analyzer.getLevel();
-        fill(127);
-        stroke(0);
-        ellipse(width/2,height/2,10+rms*200,10+rms*200);
-      }
-      function setButton(label,pos){
-        const button=createButton(label);
-        button.size(100,30);
-        button.position(pos.x,pos.y);
-        return button;
-      }
+        const video = document.getElementById("video")
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+        }).then(stream => {
+            video.srcObject = stream;
+            video.play()
+        }).catch(e => {
+          console.log(e)
+        })
     </script>
-  </body>
+     <script>
+
+        var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
+      
+      
+        function setup()
+        {
+            // graphics stuff:
+            createCanvas(400, 400);
+            background(255, 255, 255);
+            fill(0, 0, 0, 255);
+            // instructions:
+            textSize(32);
+            textAlign(CENTER);
+            text("say something", width/2, height/2);
+            myRec.onResult = showResult;
+            myRec.start();
+        }
+      
+        function draw()
+        {
+            // why draw when you can talk?
+        }
+      
+        function showResult()
+        {
+            if(myRec.resultValue==true) {
+                background(192, 255, 192);
+                text(myRec.resultString, width/2, height/2);
+                console.log(myRec.resultString);
+            }
+        }
+      
+      </script>
+</body>
 </html>
