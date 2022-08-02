@@ -48,7 +48,7 @@ class Oumu {
       if(this.ear.resultValue){
         print(this.ear.resultString);
         this.word=this.ear.resultString;
-        
+
         background(0);
         noStroke();
         triangle(350,300,390,370,300,350);
