@@ -1,3 +1,6 @@
+const ear=new p5.SpeechRec();
+var bubble=false;
+
 
 function setup() {
   createCanvas(800, 800);
@@ -25,15 +28,13 @@ function setButton(label,pos){
 }
 
 function listen(){
-  var ear=new p5.SpeechRec();
 
   ear.onResult=()=>{
     if (ear.resultValue){
       word="";
       word=ear.resultString;
       console.log("yes");
-      ellipse(250,200,500,300);
-      text(ear.resultString,width/2,height/2);
+      bubble=true;
     }
   }
   ear.start();
@@ -42,7 +43,10 @@ function listen(){
 function draw() {
   background(255);
   image(capture,0,50,800,800);
-  ellipse(200,200,400,400);
+  if(bubble){
+  ellipse(200,250,400,400);
   textSize(32);
   textAlign(CENTER);
+  text(ear.resultString,200,250);
+  }
 }
