@@ -1,5 +1,6 @@
-const ear=new p5.SpeechRec();
+const myRec=new p5.SpeechRec();
 var bubble=false;
+
 
 
 function setup() {
@@ -15,8 +16,15 @@ function setup() {
     x:100,y:0
   });
   listenButton.mousePressed(()=>{
-    listen();
+    myRec.onResult=listen();
     console.log("press");
+  });
+
+  const deleteButton=setButton('消す',{
+    x:200,y:0
+  });
+  deleteButton.mousePressed(()=>{
+    bubble=false;
   });
 }
 
@@ -29,15 +37,15 @@ function setButton(label,pos){
 
 function listen(){
 
-  ear.onResult=()=>{
-    if (ear.resultValue){
+  // myRec.onResult=()=>{
+    if (myRec.resultValue){
       word="";
-      word=ear.resultString;
+      word=myRec.resultString;
       console.log("yes");
       bubble=true;
     }
-  }
-  ear.start();
+  // }
+  myRec.start();
 }
 //1/60秒ずつ起動
 function draw() {
@@ -47,6 +55,6 @@ function draw() {
   ellipse(200,250,400,400);
   textSize(32);
   textAlign(CENTER);
-  text(ear.resultString,200,250);
+  text(myRec.resultString,200,250);
   }
 }
